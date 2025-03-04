@@ -14,15 +14,32 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    name: {
+    username: {
       type: String,
-      required: [true, "Name is required."],
+      required: [true, "username is required."],
     },
+    city: {
+      type: String,
+    },
+    phonenumber: {
+      type: Number,
+    },
+    favoriteConsoles: {
+      type: [String],
+      enum: ["gameboy", "gameboy advanced", "gamecube", "NES", "nintendo 64", "super nintendo", "playstation 1", "playstation 2", "PSP", "Xbox"]
+    },
+    favoriteGameStyles: {
+      type: [String],
+      enum: ["adventure", "fight", "FPS", "platform", "racing", "RPG", "strategy"]
+    },
+    
   },
+
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
+
 );
 
 const User = model("User", userSchema);
