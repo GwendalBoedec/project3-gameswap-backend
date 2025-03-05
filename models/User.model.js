@@ -1,4 +1,6 @@
 const { Schema, model } = require("mongoose");
+const CONSOLE_PROPERTY = require("../config/CONSOLE_PROPERTY");
+const GAMESTYLE_PROPERTY = require("../config/GAMESTYLE_PROPERTY");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
@@ -25,13 +27,16 @@ const userSchema = new Schema(
       type: Number,
     },
     favoriteConsoles: {
-      type: [String],
-      enum: ["gameboy", "gameboy advanced", "gamecube", "NES", "nintendo 64", "super nintendo", "playstation 1", "playstation 2", "PSP", "Xbox"]
+      ...CONSOLE_PROPERTY,
     },
     favoriteGameStyles: {
-      type: [String],
-      enum: ["adventure", "fight", "FPS", "platform", "racing", "RPG", "strategy"]
+      ...GAMESTYLE_PROPERTY
     },
+    ownedGames: {
+    type: Schema.Types.ObjectId, 
+    ref: "Game"
+    }
+
     
   },
 
