@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const Game = require("../models/Game.model");
 
@@ -36,8 +37,9 @@ router.get("/gamelist/:gameId", (req, res, next) => {
        })
 })
 // create a game
-router.post("/gamelist", (req, res, next) => {
+router.post("/gamelist", isAuthenticated, (req, res, next) => {
     const newGame = req.body;
+    console.log(req.body);
     Game.create(newGame)
     .then((gameFromDB) => {
         res.status(201).json(gameFromDB)
@@ -48,7 +50,7 @@ router.post("/gamelist", (req, res, next) => {
     })
 })
 // update a game 
-router.put("/gamelist/:gameId", (req, res, next) => {
+router.put("/gamelist/:gameId", isAuthenticated, (req, res, next) => {
     const {gameId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
@@ -56,7 +58,7 @@ router.put("/gamelist/:gameId", (req, res, next) => {
         return;
       }
 
-    Game.findByIdAndUpdate(gameId)
+    Game.findByIdAndUpdate(gameId, req.body, { new: true, runValidators: true })
     .then((updatedGame) => {
         res.status(200).json(updatedGame)
     })
@@ -66,7 +68,7 @@ router.put("/gamelist/:gameId", (req, res, next) => {
     })
 })
 // delete a game
-router.delete("/gamelist/:gameId", (req, res, next) => {
+router.delete("/gamelist/:gameId", isAuthenticated, (req, res, next) => {
     const {gameId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
