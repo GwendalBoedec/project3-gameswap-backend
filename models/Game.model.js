@@ -20,6 +20,9 @@ console: {
 gameStyle: {
     ...GAMESTYLE_PROPERTY
 },
+ownerFeedback: {
+    type: String
+},
 purchaseYear: {
     type: Date,
     required: true,
