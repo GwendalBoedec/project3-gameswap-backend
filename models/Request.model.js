@@ -1,6 +1,10 @@
 const { Schema, model } = require("mongoose");
 
 const requestSchema = new Schema( {
+    createdBy: {
+        type: Schema.Types.ObjectId, 
+        ref: "User"
+    },
     requestedGame: {
         type: Schema.Types.ObjectId,
         ref: "Game", 
@@ -9,6 +13,10 @@ const requestSchema = new Schema( {
     offeredGame: {
         type: Schema.Types.ObjectId,
         ref: "Game", 
+        required: true
+    },
+    contactDetails: {
+        type: String,
         required: true
     }
 },

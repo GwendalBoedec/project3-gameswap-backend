@@ -7,7 +7,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const Game = require("../models/Game.model");
 
 // get the full list of games
-router.get("/gamelist", (req, res, next) => {
+router.get("/gameslist", (req, res, next) => {
     Game.find()
        .then((allGames) => {
         res.status(200).json(allGames)
@@ -18,7 +18,7 @@ router.get("/gamelist", (req, res, next) => {
        })
 })
 // get a specific game by ID
-router.get("/gamelist/:gameId", (req, res, next) => {
+router.get("/gameslist/:gameId", (req, res, next) => {
     const {gameId} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
@@ -37,7 +37,7 @@ router.get("/gamelist/:gameId", (req, res, next) => {
        })
 })
 // create a game
-router.post("/gamelist", isAuthenticated, (req, res, next) => {
+router.post("/gameslist", isAuthenticated, (req, res, next) => {
     const newGame = req.body;
     console.log(req.body);
     Game.create(newGame)
@@ -50,7 +50,7 @@ router.post("/gamelist", isAuthenticated, (req, res, next) => {
     })
 })
 // update a game 
-router.put("/gamelist/:gameId", isAuthenticated, (req, res, next) => {
+router.put("/gameslist/:gameId", isAuthenticated, (req, res, next) => {
     const {gameId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
@@ -68,7 +68,7 @@ router.put("/gamelist/:gameId", isAuthenticated, (req, res, next) => {
     })
 })
 // delete a game
-router.delete("/gamelist/:gameId", isAuthenticated, (req, res, next) => {
+router.delete("/gameslist/:gameId", isAuthenticated, (req, res, next) => {
     const {gameId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
