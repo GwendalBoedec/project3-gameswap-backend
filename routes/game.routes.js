@@ -37,7 +37,7 @@ router.get("/gameslist/:gameId", (req, res, next) => {
        })
 })
 // create a game
-router.post("/gameslist", isAuthenticated, (req, res, next) => {
+router.post("/gameslist", (req, res, next) => {
     const newGame = req.body;
     console.log(req.body);
     Game.create(newGame)

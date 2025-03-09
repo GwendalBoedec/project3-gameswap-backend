@@ -20,12 +20,11 @@ const app = express();
 require("./config")(app);
 
 
-app.use(
-    cors({
-      // Add the URLs of allowed origins to this array
-      origin: ['http://localhost:5173'],
-    })
-  );
+// ℹ️ Configure CORS globally, allowing only localhost:5173
+app.use(cors({
+  origin: 'http://localhost:5173',  // Permet uniquement l'origine de ton frontend
+}));
+
 
 // 👇 Start handling routes here
 const indexRoutes = require("./routes/index.routes");
