@@ -15,6 +15,9 @@ const requestSchema = new Schema( {
         ref: "Game", 
         required: true
     },
+    comment: {
+        type: String
+    },
     contactDetails: {
         type: String,
         required: true
