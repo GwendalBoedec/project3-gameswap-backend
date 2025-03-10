@@ -2,9 +2,6 @@
 // https://www.npmjs.com/package/dotenv
 require("dotenv").config();
 
-// CORS to allow cross origin resource sharing
-const cors = require("cors");
-
 // ℹ️ Connects to the database
 require("./db");
 
@@ -20,10 +17,7 @@ const app = express();
 require("./config")(app);
 
 
-// ℹ️ Configure CORS globally, allowing only localhost:5173
-app.use(cors({
-  origin: 'http://localhost:5173',  // Permet uniquement l'origine de ton frontend
-}));
+
 
 
 // 👇 Start handling routes here

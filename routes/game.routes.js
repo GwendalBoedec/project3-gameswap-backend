@@ -50,7 +50,7 @@ router.post("/gameslist", (req, res, next) => {
     })
 })
 // update a game 
-router.put("/gameslist/:gameId", isAuthenticated, (req, res, next) => {
+router.put("/gameslist/:gameId", (req, res, next) => {
     const {gameId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
@@ -68,7 +68,7 @@ router.put("/gameslist/:gameId", isAuthenticated, (req, res, next) => {
     })
 })
 // delete a game
-router.delete("/gameslist/:gameId", isAuthenticated, (req, res, next) => {
+router.delete("/gameslist/:gameId", (req, res, next) => {
     const {gameId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(gameId)) {
