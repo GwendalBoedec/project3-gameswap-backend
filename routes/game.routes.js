@@ -17,6 +17,22 @@ router.get("/gameslist", (req, res, next) => {
         res.status(500).json({message: "error while retrieving full list of games"})
        })
 })
+// get games the user owns
+router.get("/myprofile/games", isAuthenticated, (req, res, next) => {
+    
+    const userId = req.payload._id;
+    console.log(req.payload._id)
+    Game.find({owner : userId})
+       .then((filteredGames) => {
+        res.status(200).json(filteredGames)
+       }) 
+       .catch((err) => {
+        console.log("Error while retrieving personalized game list", err);
+        res.status(500).json({message: "error while retrieving full list of games"})
+       })
+})
+
+
 // get a specific game by ID
 router.get("/gameslist/:gameId", (req, res, next) => {
     const {gameId} = req.params
@@ -37,8 +53,10 @@ router.get("/gameslist/:gameId", (req, res, next) => {
        })
 })
 // create a game
-router.post("/gameslist", (req, res, next) => {
-    const newGame = req.body;
+router.post("/gameslist", isAuthenticated, (req, res, next) => {
+    const userId = req.payload._id;
+    const newGame = {...req.body, owner: userId}
+    
     console.log(req.body);
     Game.create(newGame)
     .then((gameFromDB) => {
