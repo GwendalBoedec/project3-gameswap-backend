@@ -32,10 +32,10 @@ const userSchema = new Schema(
     favoriteGameStyles: {
       ...GAMESTYLE_PROPERTY
     },
-    ownedGames: {
+    ownedGames: [{
     type: Schema.Types.ObjectId, 
     ref: "Game"
-    }
+    }]
 
     
   },

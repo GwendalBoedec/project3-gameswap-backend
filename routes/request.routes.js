@@ -47,6 +47,7 @@ router.get("/myprofile/sentRequests", isAuthenticated, (req, res, next) => {
     .populate("requestedGame")
     .populate("offeredGame")
        .then((sentRequests) => {
+        console.log(sentRequests)
         res.status(200).json(sentRequests)
        }) 
        .catch((err) => {
@@ -61,11 +62,15 @@ router.get("/myprofile/receivedRequests", isAuthenticated, (req, res, next) => {
     
     const userId = req.payload._id;
     console.log("userID", userId)
-    Request.find({createdBy : userId})
+    Request.find()
     .populate("requestedGame")
     .populate("offeredGame")
-       .then((sentRequests) => {
-        res.status(200).json(sentRequests)
+       .then((requests) => {
+        res.status(200).json(
+            requests.filter((request)=> 
+                request.requestedGame && request.requestedGame.owner.toString() === userId
+            )
+        )
        }) 
        .catch((err) => {
         console.log("Error while retrieving sent requests", err);
@@ -74,7 +79,7 @@ router.get("/myprofile/receivedRequests", isAuthenticated, (req, res, next) => {
 })
 
 // delete a request
-router.delete("/requests/:requestId", (req, res, next) => {
+router.delete("/requests/:requestId", isAuthenticated, (req, res, next) => {
     const {requestId} = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(requestId)) {
