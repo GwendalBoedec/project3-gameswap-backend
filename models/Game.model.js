@@ -24,7 +24,7 @@ ownerFeedback: {
     type: String
 },
 purchaseYear: {
-    type: Date,
+    type: String,
     required: true,
     default: "unknown"
 },
