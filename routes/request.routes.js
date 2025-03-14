@@ -44,6 +44,7 @@ router.get("/myprofile/sentRequests", isAuthenticated, (req, res, next) => {
     const userId = req.payload._id;
     console.log("userID", userId)
     Request.find({createdBy : userId})
+    .populate("createdBy")
     .populate("requestedGame")
     .populate("offeredGame")
        .then((sentRequests) => {
@@ -63,6 +64,7 @@ router.get("/myprofile/receivedRequests", isAuthenticated, (req, res, next) => {
     const userId = req.payload._id;
     console.log("userID", userId)
     Request.find()
+    .populate("createdBy")
     .populate("requestedGame")
     .populate("offeredGame")
        .then((requests) => {
