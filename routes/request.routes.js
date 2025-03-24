@@ -11,7 +11,11 @@ router.post("/gameslist/:gameId/requests", isAuthenticated, (req, res, next) => 
     const userId = req.payload._id;
     const newRequest = {...req.body, createdBy: userId}
     const { gameId } = req.params;
-    
+
+
+    if (gameId === userId) {
+        return res.status(403).json({ message: "Vous ne pouvez pas échanger votre propre jeu." });
+      }
     Request.create(newRequest)
         .then((request) => {
             res.status(201).json(request)
@@ -23,7 +27,7 @@ router.post("/gameslist/:gameId/requests", isAuthenticated, (req, res, next) => 
 })
 
 // receive all request
-router.get("/requests", (req, res, next) => {
+/*router.get("/requests", (req, res, next) => {
     //const { gameId } = req.params
     Request.find()
         .populate("requestedGame")
@@ -36,7 +40,7 @@ router.get("/requests", (req, res, next) => {
             res.status(500).json({ message: "error while retrieving a request" })
         })
 })
-
+*/
 // get requests user has created
 
 router.get("/myprofile/sentRequests", isAuthenticated, (req, res, next) => {
