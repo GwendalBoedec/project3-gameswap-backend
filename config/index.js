@@ -28,17 +28,6 @@ module.exports = (app) => {
     })
   );
 
-
-  
-/* app.use((req, res, next) => {
-  console.log("server reached")
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Remplace * par l'origine spécifique si besoin
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-}); */
-
-
   // In development environment the app logs
   app.use(logger("dev"));
 

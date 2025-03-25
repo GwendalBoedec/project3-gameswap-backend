@@ -79,30 +79,17 @@ router.post("/gameslist", isAuthenticated, (req, res, next) => {
         })
 })
 
-// Tentative au faisant une route dédiée au swap 
+// update swap after swap acceptation
 router.put("/gameslist/swap", async (req, res) => {
     try {
-        console.log("hello world")
+        
         const { requestedGameId, offeredGameId, buyerId, sellerId } = req.body;
-        console.log("requested game Id", requestedGameId)
-        console.log("offered game Id", offeredGameId)
-        console.log("buyer Id", buyerId)
-        console.log("sellerId", sellerId)
-
-
 
         // convert  IDs in ObjectId
         const requestedGameObjectId = requestedGameId;
         const offeredGameObjectId = offeredGameId;
         const buyerObjectId = buyerId;
         const sellerObjectId = sellerId;
-
-        console.log(requestedGameObjectId);
-        console.log(offeredGameObjectId);
-        console.log(buyerObjectId);
-        console.log(sellerObjectId);
-
-
 
         // find games that are related to the swap
         const requestedGame = await Game.findById(requestedGameObjectId);
@@ -119,9 +106,6 @@ router.put("/gameslist/swap", async (req, res) => {
             return res.status(403).json({ message: "swap unauthorized" });
         }
 
-
-
-
         // update games with their new owner
         requestedGame.owner = buyerObjectId;
         offeredGame.owner = sellerObjectId;
@@ -130,11 +114,6 @@ router.put("/gameslist/swap", async (req, res) => {
         await requestedGame.save();
         await offeredGame.save();
 
-        // update
-        /* await Promise.all([
-             User.findByIdAndUpdate(sellerObjectId, { $pull: { ownedGames: requestedGameId }, $addToSet: { ownedGames: offeredGameId } }, { new: true }),
-             User.findByIdAndUpdate(buyerObjectId, { $pull: { ownedGames: offeredGameId }, $addToSet: { ownedGames: requestedGameId } }, { new: true })
-         ]); */
 
         await User.findByIdAndUpdate(sellerObjectId, { $pull: { ownedGames: requestedGameId } });
         await User.findByIdAndUpdate(buyerObjectId, { $pull: { ownedGames: offeredGameId } });
@@ -203,61 +182,6 @@ router.put("/gameslist/:gameId", (req, res, next) => {
             res.status(500).json({ message: "Error while updating a game" });
         });
 });
-// update a game 
-/* router.put("/gameslist/:gameId", (req, res, next) => {
-    const {gameId} = req.params;
-    const {owner} = req.body;
-
-    if (!mongoose.Types.ObjectId.isValid(gameId)) {
-        res.status(400).json({ message: "Specified id is not valid" });
-        return;
-      }
-
-   /*  Game.findByIdAndUpdate(gameId, req.body, { new: true, runValidators: true })
-    .then((updatedGame) => {
-        res.status(200).json(updatedGame)
-    })
-    .catch((err) => {
-        console.log("error while updating a game", err);
-        res.status(500).json({message: "error while updating a game"})
-    }) */
-/*   Game.findByIdAndUpdate(gameId, req.body, { new: true, runValidators: true })
-   .then((updatedGame) => {
-       if (owner) {
-           // Si un nouveau propriétaire est défini, on met à jour les utilisateurs
-           Promise.all([
-               // Retirer le jeu de l'owner précédent
-               User.findOneAndUpdate(
-                   { _id: updatedGame.owner },
-                   { $pull: { ownedGames: gameId } },
-                   { new: true }
-               ),
-               // Ajouter le jeu au nouvel owner
-               User.findOneAndUpdate(
-                   { _id: owner },
-                   { $addToSet: { ownedGames: gameId } },
-                   { new: true }
-               )
-           ])
-               .then(() => {
-                   res.status(200).json(updatedGame);
-               })
-               .catch((err) => {
-                   console.log("Error updating user's ownedGames", err);
-                   res.status(500).json({ message: "Error updating user's ownedGames" });
-               });
-       } else {
-           // Si pas de changement de propriétaire, on renvoie simplement le jeu mis à jour
-           res.status(200).json(updatedGame);
-       }
-   })
-   .catch((err) => {
-       console.log("Error while updating a game", err);
-       res.status(500).json({ message: "Error while updating a game" });
-   });
-}); */
-
-
 
 // delete a game
 router.delete("/gameslist/:gameId", (req, res, next) => {
@@ -267,14 +191,6 @@ router.delete("/gameslist/:gameId", (req, res, next) => {
         res.status(400).json({ message: "Specified id is not valid" });
         return;
     }
-    /*Game.findByIdAndDelete(gameId)
-    .then(() => {
-        res.json(`game ${gameId} has been successfully deleted`)
-    })
-    .catch((err) => {
-        console.log("error while deleting a game", err);
-        res.status(500).json({message: "error while creating a game"})
-    }) */
 
     Game.findById(gameId)
         .then((gameToDelete) => {
