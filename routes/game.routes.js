@@ -79,7 +79,7 @@ router.post("/gameslist", isAuthenticated, (req, res, next) => {
         })
 })
 
-// update swap after swap acceptation
+// update game ownership after swap acceptation
 router.put("/gameslist/swap", async (req, res) => {
     try {
         

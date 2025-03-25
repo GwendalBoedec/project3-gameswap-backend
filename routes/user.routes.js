@@ -6,8 +6,6 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const User = require("../models/User.model.js")
 
-// get the full list of user except current user
-
 // get the list of users except the one connected
 router.get("/users", isAuthenticated, (req, res, next) => {
     const userId = req.payload._id;
